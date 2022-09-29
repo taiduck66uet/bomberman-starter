@@ -12,6 +12,8 @@ public class Bomber extends Entity {
         super( x, y, img);
     }
 
+
+
     @Override
     public void update() {
 

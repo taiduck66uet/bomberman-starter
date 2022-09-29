@@ -7,19 +7,19 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class BombermanGame extends Application {
     
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
     
     private GraphicsContext gc;
     private Canvas canvas;
@@ -64,7 +64,7 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
+        /* for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 Entity object;
                 if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
@@ -75,6 +75,49 @@ public class BombermanGame extends Application {
                 }
                 stillObjects.add(object);
             }
+        }
+         */
+        try {
+            File myObj = new File("res/levels/Level1.txt");
+            Scanner myReader = new Scanner(myObj);
+            int level = myReader.nextInt();
+            int height = myReader.nextInt();
+            int width = myReader.nextInt();
+            String blank = myReader.nextLine();
+            for(int i = 0; i < height; i++) {
+                String data = myReader.nextLine();
+                Entity object;
+                for(int j = 0; j < width; j++){
+                    switch(data.charAt(j)){
+                        case '#':
+                            object = new Wall(j,i,Sprite.wall.getFxImage());
+                            break;
+                        case 'x':
+                            object = new Portal(j,i,Sprite.portal.getFxImage());
+                            break;
+                        case '1':
+                            object = new Balloom(j,i,Sprite.balloom_left1.getFxImage());
+                            break;
+                        case 'b':
+                            object = new BombItem(j,i,Sprite.powerup_bombs.getFxImage());
+                            break;
+                        case 'f':
+                            object = new FlameItem(j,i,Sprite.powerup_flames.getFxImage());
+                            break;
+                        case 's':
+                            object = new SpeedItem(j,i,Sprite.powerup_speed.getFxImage());
+                            break;
+                        default:
+                            object = new Grass(j,i,Sprite.grass.getFxImage());
+                            break;
+                    }
+                    stillObjects.add(object);
+                }
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 
