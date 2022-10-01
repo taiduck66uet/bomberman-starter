@@ -77,6 +77,7 @@ public class BombermanGame extends Application {
             }
         }
          */
+
         try {
             File myObj = new File("res/levels/Level1.txt");
             Scanner myReader = new Scanner(myObj);
